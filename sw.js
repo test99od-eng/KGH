@@ -2,7 +2,7 @@ const CACHE_NAME = 'kgh-plus-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  'https://kghplus.blogspot.com/'
+  'https://kghplus.blogspot.com/2026/04/blog-post.html'
 ];
 
 // ជំហានតម្លើង និងរក្សាទុកទិន្នន័យ (Caching)
