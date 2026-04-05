@@ -1,5 +1,5 @@
 const CACHE_NAME = 'kgh-plus-v3';
-const OFFLINE_URL = 'https://kghplus.blogspot.com/';
+const OFFLINE_URL = 'https://kghplus.blogspot.com/2026/04/blog-post_2.html';
 
 // ១. ពេលដំឡើង App ឱ្យវាទាញយកទំព័រដើមទុកភ្លាម
 self.addEventListener('install', (event) => {
