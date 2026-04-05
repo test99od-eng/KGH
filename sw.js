@@ -1,7 +1,7 @@
-const CACHE_NAME = 'kgh-plus-v3';
+const CACHE_NAME = 'kgh-plus-v4'; // ប្តូរ Version ដើម្បីឱ្យ Browser Update កូដថ្មី
 const OFFLINE_URL = 'https://kghplus.blogspot.com/2026/04/blog-post_2.html';
 
-// ១. ពេលដំឡើង App ឱ្យវាទាញយកទំព័រដើមទុកភ្លាម
+// ១. ដំឡើង និងរក្សាទុកឯកសារសំខាន់ៗ
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -14,17 +14,47 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// ២. បើកដំណើរការភ្លាមៗ
+// ២. លុប Cache ចាស់ៗចោលនៅពេល Update Version ថ្មី
 self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) {
+            return caches.delete(cache);
+          }
+        })
+      );
+    })
+  );
+  return self.clients.claim();
 });
 
-// ៣. មុខងារទាញយកមកបង្ហាញពេល Offline
+// ៣. យុទ្ធសាស្ត្រ Network First (ឆែកអ៊ីនធឺណិតមុន បើគ្មានចាំប្រើ Cache)
 self.addEventListener('fetch', (event) => {
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request).catch(() => {
-        return caches.match(OFFLINE_URL);
+      fetch(event.request)
+        .then((networkResponse) => {
+          // បើមានអ៊ីនធឺណិត វានឹងយកទំព័រថ្មីទៅរក្សាទុកក្នុង Cache ជានិច្ច
+          return caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
+        })
+        .catch(() => {
+          // បើគ្មានអ៊ីនធឺណិត វានឹងទៅរកមើលក្នុង Cache
+          return caches.match(event.request).then((response) => {
+            // បើក្នុង Cache ក៏អត់មានទំព័រហ្នឹងទៀត វានឹងបង្ហាញទំព័រ Offline ដែលអ្នកបានកំណត់
+            return response || caches.match(OFFLINE_URL);
+          });
+        })
+    );
+  } else {
+    // សម្រាប់ឯកសារផ្សេងៗ (រូបភាព, CSS, JS) ប្រើវិធីបង្ហាញពី Cache បើមាន
+    event.respondWith(
+      caches.match(event.request).then((response) => {
+        return response || fetch(event.request);
       })
     );
   }
