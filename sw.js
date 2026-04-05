@@ -1,8 +1,7 @@
-const CACHE_NAME = 'kgh-plus-refresh-v10';
-const OFFLINE_URL = 'https://kghplus.blogspot.com/2026/04/blog-post_2.html';
+const CACHE_NAME = 'kgh-dynamic-v1';
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting(); // ???????? Service Worker ?????????????????
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
@@ -16,24 +15,21 @@ self.addEventListener('activate', (event) => {
   return self.clients.claim();
 });
 
+// មុខងារទាញយក និងចងចាំទំព័រដែលបានមើល
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.match(event.request).then((cachedResponse) => {
-        // ?. ???????????????? Network ????????
-        const fetchPromise = fetch(event.request).then((networkResponse) => {
-          if (networkResponse.status === 200) {
-            cache.put(event.request, networkResponse.clone()); // Save ???????????????????????
-          }
-          return networkResponse;
-        }).catch(() => {
-          // ??????? Net ???????????????? Offline
-          return caches.match(OFFLINE_URL);
+    fetch(event.request)
+      .then((response) => {
+        // បើមាន Net ឱ្យវា Save ទំព័រនេះទុកក្នុងម៉ាស៊ីនភ្លាម
+        const responseClone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseClone);
         });
-
-        // ?. ??????????????? Cache ????? ????????????????? Net
-        return cachedResponse || fetchPromise;
-      });
-    })
+        return response;
+      })
+      .catch(() => {
+        // បើអត់ Net ឱ្យវាយកទំព័រដែលធ្លាប់ Save មកបង្ហាញ
+        return caches.match(event.request);
+      })
   );
 });
