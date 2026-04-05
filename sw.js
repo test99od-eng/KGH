@@ -1,5 +1,5 @@
 const CACHE_NAME = 'kgh-plus-v' + Date.now(); // បង្កើតឈ្មោះ Cache ថ្មីរាល់ពេលដំឡើង
-const OFFLINE_URL = 'https://kghplus.blogspot.com/2026/04/blog-post_2.html';
+const OFFLINE_URL = 'https://kghplus.blogspot.com/2026/04/blog-post.html';
 
 // ១. ពេលដំឡើង៖ បង្ខំឱ្យវាដណ្តើមការគ្រប់គ្រងភ្លាម (Skip Waiting)
 self.addEventListener('install', (event) => {
