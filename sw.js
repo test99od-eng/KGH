@@ -1,40 +1,39 @@
-const CACHE_NAME = 'kgh-store-v1';
+const CACHE_NAME = 'kgh-plus-refresh-v10';
+const OFFLINE_URL = 'https://kghplus.blogspot.com/2026/04/blog-post_2.html';
 
-// ១. ដំឡើង Service Worker ថ្មីភ្លាមៗ
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
+  self.skipWaiting(); // ???????? Service Worker ?????????????????
 });
 
-// ២. លុប Cache ចាស់ចោលភ្លាមនៅពេលមានការ Update
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cache) => {
-          return caches.delete(cache); // លុប Cache ទាំងអស់ចោលដើម្បីទទួលយករបស់ថ្មី
-        })
-      );
+    caches.keys().then((keys) => {
+      return Promise.all(keys.map((key) => {
+        if (key !== CACHE_NAME) return caches.delete(key);
+      }));
     })
   );
   return self.clients.claim();
 });
 
-// ៣. យុទ្ធសាស្ត្រ៖ ទៅយកពី Net មុន (Network First)
 self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request)
-        .then((networkResponse) => {
-          // បើមាន Net ឱ្យវា Save របស់ថ្មីចូល Cache ហើយបង្ហាញរបស់ថ្មីនោះភ្លាម
-          return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
-          });
-        })
-        .catch(() => {
-          // បើអត់ Net ទើបឱ្យវាទៅរកមើលរបស់ដែលធ្លាប់ Save ទុកក្នុង Cache
-          return caches.match(event.request);
-        })
-    );
-  }
+  event.respondWith(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.match(event.request).then((cachedResponse) => {
+        // ?. ???????????????? Network ????????
+        const fetchPromise = fetch(event.request).then((networkResponse) => {
+          if (networkResponse.status === 200) {
+            cache.put(event.request, networkResponse.clone()); // Save ???????????????????????
+          }
+          return networkResponse;
+        }).catch(() => {
+          // ??????? Net ???????????????? Offline
+          return caches.match(OFFLINE_URL);
+        });
+
+        // ?. ??????????????? Cache ????? ????????????????? Net
+        return cachedResponse || fetchPromise;
+      });
+    })
+  );
 });
