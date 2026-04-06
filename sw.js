@@ -8,8 +8,9 @@ const PRE_CACHE_ASSETS = [
   'html5-qrcode.min.js',
   'manifest.json'
 // បន្ថែម Link Post នៅទីនេះ ដើម្បីឱ្យវាទាញយកទុកជាមុន (Pre-cache)
-  'https://kghplus.blogspot.com/2026/04/blog-post_2.html'
-  'https://kghplus.blogspot.com/2026/04/blog-post.html'
+  'https://kghplus.blogspot.com/2026/04/blog-post_2.html',
+  'https://kghplus.blogspot.com/2026/04/blog-post.html',
+  'https://https://kghplus.blogspot.com/'
 ];
 
 // ព្រឹត្តិការណ៍ Install: រក្សាទុកឯកសារគោលចូលក្នុងម៉ាស៊ីន
