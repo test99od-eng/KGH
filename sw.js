@@ -1,5 +1,5 @@
 // ១. កំណត់ឈ្មោះ Cache (ប្តូរលេខ v1.1.2 រាល់ពេលកែ Post )
-const CACHE_NAME = 'kgh-v1.1.2';
+const CACHE_NAME = 'kgh-v1.1.1.1';
 
 // ២. បញ្ជីឯកសារដែលត្រូវ Save ទុកជាដាច់ខាត (Static Assets)
 const PRE_CACHE_ASSETS = [
