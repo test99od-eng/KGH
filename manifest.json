@@ -1,27 +1,22 @@
 {
-  "short_name": "KGH Plus",
-  "name": "KGH Plus - កម្សាន្ត និងចំណេះដឹង",
-  "description": "កម្មវិធីកម្សាន្ត និងអានអត្ថបទចំណេះដឹងថ្មីៗ",
+  "name": "KGH",
+  "short_name": "KGH",
+  "description": "KGH Plus Blog Service",
+  "start_url": ".",
+  "scope": "https://kghplus.blogspot.com/2021/08/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
   "icons": [
     {
-      "src": "https://blogger.googleusercontent.com/img/b/R29n bGU=/.../icon-192.png",
-      "type": "image/png",
+      "src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhASowYCoWL8fSFfN7zkkCKUhjFou1BVt49VT9NGjxW4XjHz34vtIRrU0z8VKdkM99xsc97NlK7zmZUU1WQ3icMxWAKvnWHfUaDA3KJzl4BVXcgXZVGTnI56IKKEU5fRkBjOwI9knhweWmNybnJXhl-inoMRd2XvUl-Rmmqy7XM_0Yv44rT9bR3s37mga-P/s192/512_512.png",
       "sizes": "192x192",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
-      "src": "https://blogger.googleusercontent.com/img/b/R29n bGU=/.../icon-512.png",
-      "type": "image/png",
+      "src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhASowYCoWL8fSFfN7zkkCKUhjFou1BVt49VT9NGjxW4XjHz34vtIRrU0z8VKdkM99xsc97NlK7zmZUU1WQ3icMxWAKvnWHfUaDA3KJzl4BVXcgXZVGTnI56IKKEU5fRkBjOwI9knhweWmNybnJXhl-inoMRd2XvUl-Rmmqy7XM_0Yv44rT9bR3s37mga-P/s512/512_512.png",
       "sizes": "512x512",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
-  ],
-  "start_url": "/?utm_source=pwa",
-  "background_color": "#1a1a1a",
-  "display": "standalone",
-  "scope": "/",
-  "theme_color": "#1a1a1a",
-  "orientation": "portrait",
-  "id": "kgh-pwa-v1",
-  "categories": ["entertainment", "education"]
+  ]
 }
