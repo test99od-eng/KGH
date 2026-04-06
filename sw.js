@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kgh-v2'; // ប្តូរលេខនេះរាល់ពេលមានអ្វីថ្មី
+const CACHE_NAME = 'kgh-v1.1.1'; // ប្តូរលេខនេះរាល់ពេលមានអ្វីថ្មី
 const ASSETS = [
   './',
   'index.html',
