@@ -1,48 +1,43 @@
-const CACHE_NAME = 'kgh-dynamic-v2'; // ប្តូរ version រាល់ពេលកែដំរូវ
-
-// ដាក់ URL ទំព័រដើមរបស់អ្នកចូល ដើម្បីឱ្យវា Save ទុកតាំងពីដំបូង
-const PRE_CACHE = [
+const CACHE_NAME = 'kgh-v2'; // ប្តូរលេខនេះរាល់ពេលមានអ្វីថ្មី
+const ASSETS = [
   './',
-  'index.html'
+  'index.html',
+  'html5-qrcode.min.js',
+  'manifest.json'
 ];
 
+// ១. ដំឡើង និង Save កូដថ្មី
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRE_CACHE))
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS);
+    })
   );
-  self.skipWaiting();
+  self.skipWaiting(); // បង្ខំឱ្យ Update ភ្លាមៗ មិនបាច់រង់ចាំ
 });
 
+// ២. លុប Cache ចាស់ៗចោល (Clean up)
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => Promise.all(
-      keys.map((key) => { if (key !== CACHE_NAME) return caches.delete(key); })
-    ))
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            console.log('កំពុងលុប Cache ចាស់៖', key);
+            return caches.delete(key); // លុប Cache ណាដែលឈ្មោះមិនដូច v2
+          }
+        })
+      );
+    })
   );
   return self.clients.claim();
 });
 
-// យុទ្ធសាស្ត្រ៖ រកក្នុង Cache មុន បើអត់ទើបទៅរកតាម Net (Cache-First)
+// ៣. បង្ហាញកូដថ្មីជូនអ្នកប្រើប្រាស់
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse; // បើមានក្នុងម៉ាស៊ីន ឱ្យវាបង្ហាញភ្លាម (លឿនបំផុត)
-      }
-      
-      return fetch(event.request).then((networkResponse) => {
-        // បើមាន Net ឱ្យវា Save ទុកសម្រាប់លើកក្រោយ
-        if (networkResponse && networkResponse.status === 200) {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      }).catch(() => {
-        // កន្លែងនេះសម្រាប់ការពារ បើអត់ Net ហើយរកក្នុង Cache ក៏អត់ឃើញ
-        return caches.match('/'); 
-      });
+      return cachedResponse || fetch(event.request);
     })
   );
 });
