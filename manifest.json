@@ -1,7 +1,7 @@
 {
   "name": "KGH SHOP",
   "short_name": "KGH",
-  "start_url": "/?m=1",
+  "start_url": ".",
   "display": "standalone", 
   "orientation": "portrait",
   "background_color": "#ffffff",
