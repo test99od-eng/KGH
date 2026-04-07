@@ -1,7 +1,7 @@
 {
   "name": "KGH",
   "short_name": "KGH",
-  "start_url": "./",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone", 
   "orientation": "portrait",
