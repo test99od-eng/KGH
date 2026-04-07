@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>PWA Installation Bridge</title>
 </head>
 <body>
     <script>
         if ('serviceWorker' in navigator) {
-            // ប្រើ Link ផ្ទាល់ទៅកាន់ sw.js របស់អ្នក
-            navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log('Service Worker Registered via Iframe!'))
-            .catch(err => console.log('Registration failed:', err));
+            window.addEventListener('load', function() {
+                // ចុះឈ្មោះ sw.js ដោយកំណត់ Scope ទៅកាន់ Root
+                navigator.serviceWorker.register('./sw.js', { scope: '/' })
+                .then(reg => {
+                    console.log('Service Worker Registered via Iframe!');
+                    // បង្ខំឱ្យវាឆែករកមើល Update ថ្មី
+                    reg.update();
+                })
+                .catch(err => {
+                    console.error('Registration failed:', err);
+                });
+            });
         }
     </script>
 </body>
