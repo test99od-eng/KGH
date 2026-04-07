@@ -1,9 +1,9 @@
 {
   "name": "KGH SHOP",
   "short_name": "KGH",
-  "description": "KGH Plus Blog Service",
   "start_url": "/?m=1",
-  "display": "standalone",
+  "display": "standalone", 
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#000000",
   "icons": [
