@@ -6,20 +6,11 @@
 </head>
 <body>
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                // ចុះឈ្មោះ sw.js ដោយកំណត់ Scope ទៅកាន់ Root
-                navigator.serviceWorker.register('./sw.js', { scope: '/' })
-                .then(reg => {
-                    console.log('Service Worker Registered via Iframe!');
-                    // បង្ខំឱ្យវាឆែករកមើល Update ថ្មី
-                    reg.update();
-                })
-                .catch(err => {
-                    console.error('Registration failed:', err);
-                });
-            });
-        }
-    </script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js', { scope: '/' })
+    .then(reg => console.log('Registered for Blogspot!'))
+    .catch(err => console.log('Failed:', err));
+  }
+</script>
 </body>
 </html>
