@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kgh-v3-permanent'; // ប្តូរលេខ version រាល់ពេលកែ
+const CACHE_NAME = 'kgh-v1.1.3-permanent'; // ប្តូរលេខ version រាល់ពេលកែ
 const OFFLINE_URL = '/?m=1';
 
 // បញ្ជីដែលត្រូវ Cache ជាដាច់ខាតពេល Install
