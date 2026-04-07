@@ -1,8 +1,8 @@
 {
-  "name": "KGH",
+  "name": "KGH SHOP",
   "short_name": "KGH",
   "description": "KGH Plus Blog Service",
-  "start_url": ".",
+  "start_url": "/?m=1",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
