@@ -1,9 +1,10 @@
-const CACHE_NAME = 'kgh-v1.1.11-permanent'; // ប្តូរលេខ version រាល់ពេលកែ
+const CACHE_NAME = 'kgh-v1.1.15-permanent'; // ប្តូរលេខ version រាល់ពេលកែ
 const OFFLINE_URL = '/?m=1';
 
 // បញ្ជីដែលត្រូវ Cache ជាដាច់ខាតពេល Install
 const PRE_CACHE = [
   OFFLINE_URL,
+  'https://kghplus.blogspot.com/2026/04/blog-post.html?m=1',
   'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiKXj0Z_pYdUMCspHKm5970BXt1IMDunRtSba6DFk-er4IgjMjr7cXvBox9lNvwXen_F3JncQhDBtRkspG_UJxmKeiTBdBA4zm0YfNHy2fnyXEe1rvNDlq3tiLhvIVu1YcKcYEJ4RB8w3kVfhpxJb5aRMiE72u6fyYKCD3uuzoJ9liB4hVsYv8iuTt5PIPz/s1600/512_512.png'
 ];
 
