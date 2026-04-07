@@ -12,3 +12,12 @@ self.addEventListener('install', event => {
     })
   );
 });
+// បន្ថែម Code នេះបន្តពីជួរទី ១៤ ក្នុង sw.js របស់អ្នក
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      // បើមានក្នុង Cache ឱ្យប្រើ Cache បើអត់ទេឱ្យទៅទាញពី Network
+      return response || fetch(event.request);
+    })
+  );
+});
