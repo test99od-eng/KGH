@@ -1,43 +1,36 @@
-const CACHE_NAME = 'kgh-app-v5';
-const OFFLINE_PAGE = '/?m=1';
+const CACHE_NAME = 'kgh-v1.1.6';
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll([OFFLINE_PAGE]);
-    })
-  );
-  self.skipWaiting();
-});
+// ដាក់តែឯកសារ Static ដែល App ត្រូវការជាចាំបាច់
+const PRE_CACHE_ASSETS = [
+  'https://cdn.jsdelivr.net/gh/test99od-eng/KGH/manifest.json',
+  'html5-qrcode.min.js' // បើអ្នកមានប្រើ Script ស្កេន
+];
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim());
-});
+// ផ្នែក Install និង Activate រក្សាទុកដដែល...
 
 self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          // បើមាន Net: បង្ហាញទំព័រថ្មី និង Save ទុកក្នុង Cache
-          return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, response.clone());
-            return response;
-          });
-        })
-        .catch(() => {
-          // បើអត់ Net: ទៅរកមើលទំព័រដែលធ្លាប់ Save ក្នុង Cache
-          return caches.match(event.request).then((res) => {
-            return res || caches.match(OFFLINE_PAGE);
-          });
-        })
-    );
-  } else {
-    // សម្រាប់រូបភាព ឬ CSS
-    event.respondWith(
-      caches.match(event.request).then((response) => {
-        return response || fetch(event.request);
-      })
-    );
+  let requestUrl = new URL(event.request.url);
+  if (requestUrl.searchParams.has('m')) {
+    requestUrl.searchParams.delete('m');
   }
+
+  event.respondWith(
+    caches.match(requestUrl.toString()).then((cachedResponse) => {
+      if (cachedResponse) return cachedResponse;
+
+      return fetch(event.request).then((networkResponse) => {
+        // បើគេចូលមើលទំព័រណា វានឹង "លួច Save" ទុកក្នុង Cache ភ្លាម (Dynamic Cache)
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(requestUrl.toString(), responseToCache);
+          });
+        }
+        return networkResponse;
+      }).catch(() => {
+        // បើ Offline ហើយរកក្នុង Cache មិនឃើញ ឱ្យវាបង្ហាញទំព័រចុងក្រោយដែលគេបានមើល
+        return caches.match(event.request);
+      });
+    })
+  );
 });
