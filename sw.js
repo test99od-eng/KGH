@@ -4,6 +4,7 @@ const CACHE_NAME = 'kgh-shop-v1';
 // បញ្ជីឯកសារដែលត្រូវ Cache ទុកជាមុន (Static Assets)
 const PRECACHE_ASSETS = [
   '/?m=1',
+  'https://kghplus.blogspot.com/2026/04/blog-post.html?m=1',
   'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiKXj0Z_pYdUMCspHKm5970BXt1IMDunRtSba6DFk-er4IgjMjr7cXvBox9lNvwXen_F3JncQhDBtRkspG_UJxmKeiTBdBA4zm0YfNHy2fnyXEe1rvNDlq3tiLhvIVu1YcKcYEJ4RB8w3kVfhpxJb5aRMiE72u6fyYKCD3uuzoJ9liB4hVsYv8iuTt5PIPz/s1600/512_512.png'
 ];
 
