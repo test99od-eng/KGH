@@ -1,8 +1,8 @@
 const CACHE_NAME = 'kgh-dynamic-cache-v1';
 const STATIC_ASSETS = [
   './',
-  './index.html',
-  './manifest.json',
+  'https://test99od-eng.github.io/KGH/',
+  'https://raw.githubusercontent.com/test99od-eng/KGH/refs/heads/main/manifest.json',
   './install-pwa.html'
 ];
 
