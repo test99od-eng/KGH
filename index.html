@@ -1680,9 +1680,21 @@ _WidgetManager._RegisterWidget('_ContactFormView', new _WidgetInfo('ContactForm1
 </script>
 <script>
   if ('serviceWorker' in navigator) {
-    // ប្ដូរលេខនៅទីនេះ បើអ្នកចង់ឱ្យវា Update ក្នុងទូរស័ព្ទ
-    navigator.serviceWorker.register('./sw.js?v=1.1.2', { scope: '/' }) 
-      .then(reg => console.log('Updated!'));
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => {
+          // បញ្ជាឱ្យ Update ភ្លាមៗបើមានកូដថ្មីលើ GitHub
+          reg.onupdatefound = () => {
+            const installingWorker = reg.installing;
+            installingWorker.onstatechange = () => {
+              if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('មានទិន្នន័យថ្មី! សូមទាញ Refresh ដើម្បីមើលការផ្លាស់ប្តូរ។');
+              }
+            };
+          };
+        })
+        .catch(err => console.log('ការចុះឈ្មោះបរាជ័យ:', err));
+    });
   }
 </script>    
 </body>
