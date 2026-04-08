@@ -2,7 +2,7 @@
   "name": "KGH",
   "short_name": "KGH",
   "version": "1.1.1",
-  "start_url": "./index.html",
+  "start_url": "https://test99od-eng.github.io/KGH/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2196f3",
