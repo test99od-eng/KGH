@@ -1678,5 +1678,12 @@ _WidgetManager._RegisterWidget('_LinkListView', new _WidgetInfo('LinkList103', '
 _WidgetManager._RegisterWidget('_LinkListView', new _WidgetInfo('LinkList104', 'footer-menu', document.getElementById('LinkList104'), {}, 'displayModeFull'));
 _WidgetManager._RegisterWidget('_ContactFormView', new _WidgetInfo('ContactForm1', 'hidden-widgets', document.getElementById('ContactForm1'), {'contactFormMessageSendingMsg': 'Sending...', 'contactFormMessageSentMsg': 'Your message has been sent.', 'contactFormMessageNotSentMsg': 'Message could not be sent. Please try again later.', 'contactFormInvalidEmailMsg': 'A valid email address is required.', 'contactFormEmptyMessageMsg': 'Message field cannot be empty.', 'title': 'Contact Form', 'blogId': '3266799750000865021', 'contactFormNameMsg': 'Name', 'contactFormEmailMsg': 'Email', 'contactFormMessageMsg': 'Message', 'contactFormSendMsg': 'Send', 'contactFormToken': 'APlU3lzR33Je4HMoAfyqeLIeZon9:1775554563877', 'submitUrl': 'https://www.blogger.com/contact-form.do'}, 'displayModeFull'));
 </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    // ប្ដូរលេខនៅទីនេះ បើអ្នកចង់ឱ្យវា Update ក្នុងទូរស័ព្ទ
+    navigator.serviceWorker.register('./sw.js?v=1.2', { scope: '/' }) 
+      .then(reg => console.log('Updated!'));
+  }
+</script>    
 </body>
 </html>
