@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kgh-plus-v1.1.7' + new Date().getTime(); // បង្កើត Version ថ្មីតាមពេលវេលា
+const CACHE_NAME = 'kgh-plus-v1.1.8' + new Date().getTime(); // បង្កើត Version ថ្មីតាមពេលវេលា
 const assets = [
   './',
   './index.html',
