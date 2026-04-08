@@ -1199,7 +1199,7 @@ a.ads-here{height:65px}
 
 <div class="kgh-shop-wrapper" id="main-content">
 
-    <div class="company-header title-metfone">Metfone - Met5</div>
+    <div class="company-header title-metfone">Metfone - Met</div>
     <div class="plan-scroll-container">
         <div class="plan-card card-metfone">
             <div class="p-price">1$</div>
@@ -1713,6 +1713,39 @@ _WidgetManager._RegisterWidget('_ContactFormView', new _WidgetInfo('ContactForm1
           };
         })
         .catch(err => console.log('ការចុះឈ្មោះបរាជ័យ:', err));
+    });
+  }
+</script> 
+<script>
+  let refreshing = false;
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => {
+          // ១. ចាប់ផ្ដើមឆែកមើលការ Update
+          reg.onupdatefound = () => {
+            const installingWorker = reg.installing;
+            installingWorker.onstatechange = () => {
+              if (installingWorker.state === 'installed') {
+                if (navigator.serviceWorker.controller) {
+                  // ២. បើឃើញមានរបស់ថ្មី វានឹងបញ្ជាឱ្យ Skip Waiting ក្នុង sw.js
+                  console.log('កំពុងទាញយកទិន្នន័យថ្មី...');
+                  installingWorker.postMessage({ action: 'skipWaiting' });
+                }
+              }
+            };
+          };
+        })
+        .catch(err => console.log('Registration failed:', err));
+    });
+
+    // ៣. បញ្ជាឱ្យ Browser Refresh ស្វ័យប្រវត្តិពេល Service Worker ថ្មីចាប់ផ្ដើមដើរ
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) {
+        window.location.reload();
+        refreshing = true;
+      }
     });
   }
 </script>    
