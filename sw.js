@@ -1,23 +1,22 @@
-const CACHE_NAME = 'kgh-dynamic-cache-v1.1.3';
-const STATIC_ASSETS = [
+const CACHE_NAME = 'kgh-plus-v1.1.6' + new Date().getTime(); // បង្កើត Version ថ្មីតាមពេលវេលា
+const assets = [
   './',
-  'https://test99od-eng.github.io/KGH/',
-  'https://raw.githubusercontent.com/test99od-eng/KGH/refs/heads/main/manifest.json',
-  './install-pwa.html'
+  './index.html',
+  './manifest.json',
+  './sw.js'
 ];
 
-// ១. ជំហានដំឡើង៖ រក្សាទុកគ្រោងឆ្អឹងវេបសាយ
+// ១. ដំឡើង និងបង្ខំឱ្យដើរភ្លាម (Skip Waiting)
 self.addEventListener('install', (event) => {
+  self.skipWaiting(); 
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('បានរក្សាទុកគ្រោងឆ្អឹងវេបសាយ');
-      return cache.addAll(STATIC_ASSETS);
+      return cache.addAll(assets);
     })
   );
-  self.skipWaiting(); // ឱ្យ Service Worker ថ្មីដើរភ្លាមៗ
 });
 
-// ២. ជំហានសម្អាត Cache ចាស់ (ពេលអ្នកប្តូរ Version ថ្មី)
+// ២. សម្អាត Cache ចាស់ៗចោលឱ្យអស់
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -26,23 +25,31 @@ self.addEventListener('activate', (event) => {
       );
     })
   );
-  self.clients.claim();
+  self.clients.claim(); // គ្រប់គ្រង Browser ភ្លាមៗ
 });
 
-// ៣. យុទ្ធសាស្ត្រសំខាន់៖ បង្ហាញរបស់ចាស់ រួច Update របស់ថ្មី (Stale-While-Revalidate)
+// ៣. យុទ្ធសាស្ត្រទាញយកទិន្នន័យ (Network First)
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.match(event.request).then((cachedResponse) => {
-        const fetchPromise = fetch(event.request).then((networkResponse) => {
-          // បើមាន Internet វានឹងយករបស់ថ្មីទៅដាក់ក្នុង Cache (ជំនួសអា舊)
-          cache.put(event.request, networkResponse.clone());
-          return networkResponse;
+    fetch(event.request)
+      .then((response) => {
+        // បើមាន Internet ទាញយករបស់ថ្មី ហើយ Save ទុកក្នុង Cache
+        const resClone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, resClone);
         });
-
-        // បើមានរបស់ក្នុង Cache គឺបង្ហាញភ្លាម បើអត់ទេទើបចាំ Internet
-        return cachedResponse || fetchPromise;
-      });
-    })
+        return response;
+      })
+      .catch(() => {
+        // បើអត់ Internet ទើបទៅយករបស់ក្នុង Cache មកបង្ហាញ
+        return caches.match(event.request);
+      })
   );
+});
+
+// ទទួលបញ្ជា SKIP_WAITING ពី index.html
+self.addEventListener('message', (event) => {
+  if (event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
