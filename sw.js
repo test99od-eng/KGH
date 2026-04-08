@@ -1,8 +1,8 @@
-const CACHE_NAME = 'kgh-plus-v1.1.3'; // អ្នកអាចប្ដូរលេខ version កន្លែងនេះ
+const CACHE_NAME = 'kgh-plus-v1.1.1'; // អ្នកអាចប្ដូរលេខ version កន្លែងនេះ
 const PRE_CACHE_ASSETS = [
   '/', // ទំព័រដើម
   '/2026/04/blog-post.html', // ទំព័រ Post ដែលអ្នកចង់ឱ្យមើលបាន Offline
-  'https://cdn.jsdelivr.net/gh/test99od-eng/KGH@main/manifest.json',
+  'https://cdn.jsdelivr.net/gh/test99od-eng/KGH/manifest.json?v=1.1.1',
   'https://blogger.googleusercontent.com/img/b/R2.../s1600/icon.png' // Link icon របស់អ្នក
 ];
 
