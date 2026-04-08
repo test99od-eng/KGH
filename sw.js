@@ -1,50 +1,46 @@
-const CACHE_NAME = 'kgh-plus-v1.1.1'; // អ្នកអាចប្ដូរលេខ version កន្លែងនេះ
+const CACHE_NAME = 'kgh-plus-pro-v1.1.4';
 const PRE_CACHE_ASSETS = [
-  '/', // ទំព័រដើម
-  'https://kghplus.blogspot.com/2026/04/blog-post.html?m=1', // ទំព័រ Post ដែលអ្នកចង់ឱ្យមើលបាន Offline
+  '/', 
+  '/2026/04/blog-post.html','https://kghplus.blogspot.com/2026/04/blog-post.html?m=1', // ទំព័រ Post ដែលអ្នកចង់ឱ្យមើលបាន Offline
   'https://cdn.jsdelivr.net/gh/test99od-eng/KGH/manifest.json?v=1.1.1',
-  'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhASowYCoWL8fSFfN7zkkCKUhjFou1BVt49VT9NGjxW4XjHz34vtIRrU0z8VKdkM99xsc97NlK7zmZUU1WQ3icMxWAKvnWHfUaDA3KJzl4BVXcgXZVGTnI56IKKEU5fRkBjOwI9knhweWmNybnJXhl-inoMRd2XvUl-Rmmqy7XM_0Yv44rT9bR3s37mga-P/s192/512_512.png' // Link icon របស់អ្នក
+  'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhASowYCoWL8fSFfN7zkkCKUhjFou1BVt49VT9NGjxW4XjHz34vtIRrU0z8VKdkM99xsc97NlK7zmZUU1WQ3icMxWAKvnWHfUaDA3KJzl4BVXcgXZVGTnI56IKKEU5fRkBjOwI9knhweWmNybnJXhl-inoMRd2XvUl-Rmmqy7XM_0Yv44rT9bR3s37mga-P/s192/512_512.png'
 ];
 
-// ១. ជំហានដំឡើង (Install)៖ ទាញយក File ទុកក្នុងម៉ាស៊ីន
+// ១. ការដំឡើង និងការ Cache ឯកសារសំខាន់ៗ
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      console.log('កំពុងរក្សាទុកឯកសារក្នុង Cache...');
+      console.log('Caching essential assets...');
       return cache.addAll(PRE_CACHE_ASSETS);
     })
   );
-  self.skipWaiting(); // បង្ខំឱ្យ Service Worker ថ្មីដើរភ្លាម
+  self.skipWaiting();
 });
 
-// ២. ជំហានដំណើរការ (Activate)៖ លុប Cache ចាស់ៗចោល
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cache => {
-          if (cache !== CACHE_NAME) {
-            console.log('កំពុងសម្អាត Cache ចាស់...');
-            return caches.delete(cache);
-          }
-        })
-      );
-    })
-  );
-  self.clients.claim();
-});
 
-// ៣. ជំហានទាញយក (Fetch)៖ បង្ហាញទិន្នន័យទោះបីអត់ Internet
+
+// ៣. យុទ្ធសាស្ត្រ Cache-First: បង្ហាញពី Cache មុន បើអត់មានទើបទៅរកតាម Internet
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(cachedResponse => {
-      // បើមានក្នុងម៉ាស៊ីន (Cache) ឱ្យយកមកបង្ហាញ បើអត់ទេឱ្យទៅរកក្នុង Internet
-      return cachedResponse || fetch(event.request).catch(() => {
-        // បើដាច់ Internet ហើយរកក្នុង Cache ក៏អត់ឃើញ ឱ្យបង្ហាញទំព័រដើមជំនួស
-        if (event.request.mode === 'navigate') {
-          return caches.match('/');
+      // បើមានក្នុង Cache ឱ្យយកមកបង្ហាញភ្លាម
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+
+      // បើគ្មានក្នុង Cache ទេ ទើបទៅទាញយកពី Network
+      return fetch(event.request).then(networkResponse => {
+        // បើការទាញយកជោគជ័យ ឱ្យលួចយកវាទៅរក្សាទុកក្នុង Cache
+        if (networkResponse && networkResponse.status === 200) {
+          return caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
         }
+        return networkResponse;
       });
     })
+    // លុបផ្នែក .catch() ដែលធ្លាប់បង្ហាញទំព័រដើមចេញហើយ
   );
 });
+
