@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kgh-dynamic-cache-v1';
+const CACHE_NAME = 'kgh-dynamic-cache-v1.1.1';
 const STATIC_ASSETS = [
   './',
   'https://test99od-eng.github.io/KGH/',
