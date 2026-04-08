@@ -1,7 +1,7 @@
 const CACHE_NAME = 'kgh-plus-v1.1.1'; // អ្នកអាចប្ដូរលេខ version កន្លែងនេះ
 const PRE_CACHE_ASSETS = [
   '/', // ទំព័រដើម
-  '/2026/04/blog-post.html', // ទំព័រ Post ដែលអ្នកចង់ឱ្យមើលបាន Offline
+  'https://kghplus.blogspot.com/2026/04/blog-post.html?m=1', // ទំព័រ Post ដែលអ្នកចង់ឱ្យមើលបាន Offline
   'https://cdn.jsdelivr.net/gh/test99od-eng/KGH/manifest.json?v=1.1.1',
   'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhASowYCoWL8fSFfN7zkkCKUhjFou1BVt49VT9NGjxW4XjHz34vtIRrU0z8VKdkM99xsc97NlK7zmZUU1WQ3icMxWAKvnWHfUaDA3KJzl4BVXcgXZVGTnI56IKKEU5fRkBjOwI9knhweWmNybnJXhl-inoMRd2XvUl-Rmmqy7XM_0Yv44rT9bR3s37mga-P/s192/512_512.png' // Link icon របស់អ្នក
 ];
